@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAFKAHKU - Platform Riset & Eksekusi Nafkah Anak Pasca Perceraian</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#151e32',
+                            900: '#0f172a',
+                            950: '#090d16'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0d9488; }
+        .sidebar-active {
+            background: linear-gradient(90deg, rgba(13, 148, 136, 0.2) 0%, rgba(15, 23, 42, 0) 100%);
+            border-left: 3px solid #2dd4bf;
+            color: #2dd4bf !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased h-screen overflow-hidden flex">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside id="sidebar" class="w-72 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0 transition-all duration-300 z-40 absolute md:relative -translate-x-full md:translate-x-0 h-full">
+        <div class="overflow-y-auto flex-1">
+            <!-- Brand Logo & Header -->
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-900 z-10">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchSection('home')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 via-teal-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-teal-900/50">
+                        <i class="fa-solid fa-scale-balanced text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-teal-400 via-teal-200 to-amber-300 bg-clip-text text-transparent">NAFKAHKU</span>
+                        <span class="block text-[10px] font-semibold text-slate-400 tracking-wider">EKSEKUSI & DANA NAFKAH</span>
+                    </div>
+                </div>
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="p-4 space-y-1 text-xs font-medium">
+                <div class="px-3 py-1.5 text-[10px] font-bold text-teal-400 uppercase tracking-wider">MODUL NAVIGATION</div>
+                
+                <button onclick="switchSection('home')" id="nav-home" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition sidebar-active">
+                    <i class="fa-solid fa-house w-4 text-center"></i>
+                    <span>Landing Page</span>
+                </button>
+
+                <button onclick="switchRoleView('wali')" id="nav-wali" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-user-nurse w-4 text-center text-teal-400"></i>
+                    <span>Wali / Penerima Nafkah</span>
+                </button>
+
+                <button onclick="switchRoleView('pemberi')" id="nav-pemberi" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-user-tie w-4 text-center text-amber-400"></i>
+                    <span>Pemberi Nafkah</span>
+                </button>
+
+                <button onclick="switchSection('tahapan')" id="nav-tahapan" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-gavel w-4 text-center text-rose-400"></i>
+                    <span>System Penegakan</span>
+                </button>
+
+                <button onclick="switchSection('datadummy')" id="nav-datadummy" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-building-columns w-4 text-center text-blue-400"></i>
+                    <span>Verifikasi Ekonomi</span>
+                </button>
+
+                <button onclick="switchRoleView('penyokong')" id="nav-penyokong" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-hand-holding-dollar w-4 text-center text-emerald-400"></i>
+                    <span>Dana Penyokong</span>
+                </button>
+
+                <button onclick="switchSection('pengaduan')" id="nav-pengaduan" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-bullhorn w-4 text-center text-amber-500"></i>
+                    <span>Pusat Pengaduan</span>
+                </button>
+
+                <button onclick="switchRoleView('pengadilan')" id="nav-pengadilan" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-scale-balanced w-4 text-center text-indigo-400"></i>
+                    <span>Dashboard Pengadilan</span>
+                </button>
+
+                <button onclick="switchSection('arsitektur')" id="nav-arsitektur" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-shield-halved w-4 text-center text-cyan-400"></i>
+                    <span>Arsitektur & Security</span>
+                </button>
+
+                <button onclick="switchSection('auth')" id="nav-auth" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-key w-4 text-center text-purple-400"></i>
+                    <span>Auth Center</span>
+                </button>
+
+                <div class="pt-3 pb-1 border-t border-slate-800/80 my-2">
+                    <span class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Dokumentasi Riset</span>
+                </div>
+                <button onclick="switchSection('ringkasan')" id="nav-ringkasan" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-file-contract w-4 text-center"></i>
+                    <span>Ringkasan Esai & Celah</span>
+                </button>
+                <button onclick="switchSection('komparasi')" id="nav-komparasi" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-globe w-4 text-center"></i>
+                    <span>Komparasi Luar Negeri</span>
+                </button>
+                <button onclick="switchSection('esai')" id="nav-esai" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-teal-300 transition">
+                    <i class="fa-solid fa-book-open w-4 text-center"></i>
+                    <span>Naskah Esai Lengkap</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Footer Sidebar Metadata & Sistem Terintegrasi Badge -->
+        <div class="p-4 border-t border-slate-800 bg-slate-900/90 space-y-2">
+            <div class="p-3 rounded-xl bg-gradient-to-r from-teal-950 to-slate-950 border border-teal-500/30 text-xs">
+                <p class="font-bold text-teal-300 text-[11px] flex items-center mb-0.5">
+                    <i class="fa-solid fa-link text-amber-400 mr-1.5"></i> Sistem Terintegrasi
+                </p>
+                <p class="text-[10px] text-slate-400 leading-tight">
+                    Terhubung langsung dengan Mahkamah Agung & Lembaga Penegak Hukum.
+                </p>
+            </div>
+            <div class="px-2 text-[10px] text-slate-500 text-center">
+                Riset Ilmiah 2026 • UIN Sunan Kalijaga
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 flex flex-col min-w-0 overflow-y-auto relative">
+        <!-- Header Bar -->
+        <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-30 px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+                <h1 id="page-title" class="text-sm md:text-base font-bold text-white flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+                    <span>Platform Nafkahku - Eksekusi Nafkah Anak Interaktif</span>
+                </h1>
+            </div>
+
+            <!-- Quick Action Header Buttons -->
+            <div class="flex items-center space-x-3">
+                <button onclick="switchSection('auth')" class="px-3.5 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-semibold shadow-md shadow-teal-900/40 transition flex items-center space-x-2">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span class="hidden sm:inline">Masuk / Portal Auth</span>
+                </button>
+                <button onclick="switchSection('pengaduan')" class="px-3.5 py-1.5 rounded-lg bg-rose-600/20 border border-rose-500/40 text-rose-300 hover:bg-rose-600/30 text-xs font-semibold transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-400"></i>
+                    <span class="hidden sm:inline">Lapor Tunggakan</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- SECTION CONTENT CONTAINER -->
+        <div class="p-4 md:p-8 space-y-8 max-w-7xl mx-auto w-full">
+
+            <!-- 1. DASHBOARD INTEGRATED SECTION -->
+            <section id="sec-dashboard" class="content-sec space-y-6">
+                <!-- Top Bar Role Selector & Banner -->
+                <div class="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950 border border-teal-500/30 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-1">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                PERKARA NO. 1204/PDT.G/2024/PA.JAKSEL
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                STATUS: AKTIF TERPATAU
+                            </span>
+                        </div>
+                        <h2 class="text-xl md:text-2xl font-extrabold text-white">Dashboard Monitoring Nafkah Anak</h2>
+                        <p class="text-xs text-slate-400">Intervensi Eksekusi Putusan Peradilan Agama Terintegrasi E-Payment & Dana Penyokong</p>
+                    </div>
+
+                    <!-- Role Selector Box -->
+                    <div class="flex items-center space-x-3 w-full md:w-auto bg-slate-900/90 p-2 rounded-xl border border-slate-700">
+                        <label class="text-xs font-semibold text-slate-400 whitespace-nowrap pl-2">
+                            <i class="fa-solid fa-user-gear text-teal-400 mr-1"></i> SIMULASI ROLE:
+                        </label>
+                        <select id="role-selector" onchange="changeDashboardRole(this.value)" class="bg-slate-800 text-white text-xs font-bold rounded-lg px-3 py-2 border border-slate-600 focus:outline-none focus:border-teal-400 w-full md:w-56 cursor-pointer">
+                            <option value="wali">1. Wali / Penerima Nafkah (Ibu)</option>
+                            <option value="pemberi">2. Pemberi Nafkah (Ayah)</option>
+                            <option value="penyokong">3. Lembaga Dana Penyokong (BAZNAS)</option>
+                            <option value="pengadilan">4. Dashboard Pengadilan Agama</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ROLE VIEW 1: WALI / PENERIMA NAFKAH -->
+                <div id="role-view-wali" class="role-view space-y-6">
+                    <!-- Stat Summary Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-teal-500/40 transition shadow-lg">
+                            <span class="text-slate-400 text-xs font-semibold">Kewajiban Bulanan</span>
+                            <p class="text-2xl font-black text-teal-400 mt-1">Rp 4.500.000</p>
+                            <p class="text-[11px] text-slate-500 mt-1">Berdasarkan Amar Putusan PA</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 transition shadow-lg">
+                            <span class="text-slate-400 text-xs font-semibold">Telah Diterima (Tahun Ini)</span>
+                            <p class="text-2xl font-black text-emerald-400 mt-1">Rp 13.500.000</p>
+                            <p class="text-[11px] text-emerald-400/80 mt-1"><i class="fa-solid fa-circle-check"></i> 3 Bulan Terbayar Disiplin</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-amber-500/40 transition shadow-lg">
+                            <span class="text-slate-400 text-xs font-semibold">Tunggakan Ayah</span>
+                            <p class="text-2xl font-black text-amber-400 mt-1">Rp 4.500.000</p>
+                            <p class="text-[11px] text-amber-400/80 mt-1"><i class="fa-solid fa-clock"></i> Menunggak Bulan Ini (Bulan 1)</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 transition shadow-lg">
+                            <span class="text-slate-400 text-xs font-semibold">Dana Penyokong (Qardhul Hasan)</span>
+                            <p class="text-2xl font-black text-cyan-400 mt-1">SIAP CAIR</p>
+                            <p class="text-[11px] text-cyan-300 mt-1"><i class="fa-solid fa-shield-heart"></i> Perlindungan Anak Otomatis</p>
+                        </div>
+                    </div>
+
+                    <!-- Main Operational Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Left: Child Info & Automatic Cushion Action -->
+                        <div class="lg:col-span-2 p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-5">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-child"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white text-base">Wali: Ny. Siti Rahmawati</h3>
+                                        <p class="text-xs text-slate-400">Anak Terdaftar: A.F. (10 Thn) & R.M. (7 Thn)</p>
+                                    </div>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                    Rekening Terverifikasi
+                                </span>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-slate-800/60 border border-amber-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                                <div>
+                                    <div class="flex items-center space-x-2 text-amber-400 text-xs font-bold mb-1">
+                                        <i class="fa-solid fa-bell"></i>
+                                        <span>PEMBERITAHUAN TUNGGAKAN BULAN INI</span>
+                                    </div>
+                                    <p class="text-xs text-slate-300">Pemberi nafkah belum menyetorkan kewajiban bulan ini. Anda dapat mengklaim Dana Penyokong (Qardhul Hasan BAZNAS) agar pemenuhan gizi & pendidikan anak tidak terputus.</p>
+                                </div>
+                                <button onclick="simulasiCairPenyokong()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold text-xs shadow-lg transition whitespace-nowrap">
+                                    <i class="fa-solid fa-hand-holding-dollar mr-1"></i> Klaim Dana Penyokong
+                                </button>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Status Pemenuhan Per Bulan (2026)</h4>
+                                <div class="space-y-2 text-xs">
+                                    <div class="p-3 rounded-xl bg-slate-800/80 flex items-center justify-between">
+                                        <span class="font-bold text-white"><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i> Januari 2026</span>
+                                        <span class="text-slate-400">Rp 4.500.000 (Auto-Deduct Payroll)</span>
+                                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold text-[10px]">LUNAS</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-slate-800/80 flex items-center justify-between">
+                                        <span class="font-bold text-white"><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i> Februari 2026</span>
+                                        <span class="text-slate-400">Rp 4.500.000 (Auto-Deduct Payroll)</span>
+                                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold text-[10px]">LUNAS</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-slate-800/80 flex items-center justify-between">
+                                        <span class="font-bold text-white"><i class="fa-solid fa-circle-check text-emerald-400 mr-2"></i> Maret 2026</span>
+                                        <span class="text-slate-400">Rp 4.500.000 (Transfer Langsung)</span>
+                                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold text-[10px]">LUNAS</span>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
+                                        <span class="font-bold text-amber-300"><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-2"></i> April 2026</span>
+                                        <span class="text-slate-300">Rp 4.500.000 (Menunggak 12 Hari)</span>
+                                        <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold text-[10px]">Eskalasi Tahap 1</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Complaint & Direct Contact -->
+                        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                            <h3 class="font-bold text-white text-sm flex items-center">
+                                <i class="fa-solid fa-shield-cat text-teal-400 mr-2"></i> Aksi Cepat Wali
+                            </h3>
+                            <p class="text-xs text-slate-400">Laporkan kendala pembayaran atau ajukan perubahan nominal nafkah ke Pengadilan Agama.</p>
+
+                            <div class="space-y-3 pt-2">
+                                <button onclick="switchSection('pengaduan')" class="w-full p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs font-semibold text-slate-200 transition flex items-center justify-between">
+                                    <span><i class="fa-solid fa-bullhorn text-amber-400 mr-2"></i> Laporkan Penunggakan Baru</span>
+                                    <i class="fa-solid fa-chevron-right text-slate-500"></i>
+                                </button>
+                                <button onclick="switchSection('datadummy')" class="w-full p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs font-semibold text-slate-200 transition flex items-center justify-between">
+                                    <span><i class="fa-solid fa-eye text-teal-400 mr-2"></i> Cek Verifikasi Pekerjaan Ayah</span>
+                                    <i class="fa-solid fa-chevron-right text-slate-500"></i>
+                                </button>
+                                <button onclick="customAlert('Permohonan salinan resmi putusan eksekusi telah dikirimkan ke email terdaftar.')" class="w-full p-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-left text-xs font-semibold text-slate-200 transition flex items-center justify-between">
+                                    <span><i class="fa-solid fa-file-pdf text-rose-400 mr-2"></i> Unduh Salinan Putusan PA</span>
+                                    <i class="fa-solid fa-download text-slate-500"></i>
+                                </button>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-teal-950/50 border border-teal-500/30 text-[11px] text-teal-200 space-y-1">
+                                <p class="font-bold"><i class="fa-solid fa-headset mr-1"></i> Bantuan Pendampingan Legal</p>
+                                <p class="text-slate-400">Tim LBH Posbakum Pengadilan Agama siap mendampingi eksekusi hak anak Anda.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROLE VIEW 2: PEMBERI NAFKAH (AYAH) WITH KLARIFIKASI FORM -->
+                <div id="role-view-pemberi" class="role-view space-y-6 hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Column 1: Payment & Auto Deduct Status -->
+                        <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-5">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white text-base">Bpk. Ahmad Fauzi</h3>
+                                    <p class="text-xs text-slate-400">NIK: 3174092108850002 • PT. Teknologi Nusa (Formal)</p>
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-xl bg-slate-800/80 space-y-2 border border-slate-700">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-400">Status Auto-Deduct Payroll:</span>
+                                    <span class="font-bold text-emerald-400"><i class="fa-solid fa-circle-check"></i> Terhubung BPJS TK</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-400">Kewajiban Bulanan:</span>
+                                    <span class="font-bold text-white">Rp 4.500.000 / bln</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-slate-400">Tanggal Potong Otomatis:</span>
+                                    <span class="font-bold text-amber-300">Setiap Tanggal 25</span>
+                                </div>
+                            </div>
+
+                            <button onclick="simulasiBayarManual()" class="w-full py-3 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold text-xs shadow-lg transition">
+                                <i class="fa-solid fa-credit-card mr-1.5"></i> Bayar Kewajiban Manual (QRIS / Va Bank)
+                            </button>
+                        </div>
+
+                        <!-- Column 2 & 3: FORM KLARIFIKASI KENDALA EKONOMI -->
+                        <div class="lg:col-span-2 p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-5">
+                            <div>
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                    FITUR PENYESUAIAN HUKUM (PASAL 156 KHI)
+                                </span>
+                                <h3 class="font-bold text-white text-lg mt-1">Form Klarifikasi & Pengajuan Kendala Ekonomi</h3>
+                                <p class="text-xs text-slate-400">Jika Anda mengalami PHK, penurunan penghasilan drastis, atau kebangkrutan, ajukan rekonstruksi kewajiban agar tidak terkena sanksi administratif atau pemblokiran keanggotaan/perizinan.</p>
+                            </div>
+
+                            <form onsubmit="handleKlarifikasiForm(event)" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">Jenis Kendala Ekonomi</label>
+                                        <select required class="w-full bg-slate-800 text-white text-xs rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-teal-400">
+                                            <option value="">-- Pilih Kendala --</option>
+                                            <option value="phk">PHK / Pemutusan Hubungan Kerja</option>
+                                            <option value="penurunan">Penurunan Gaji / Omzet Usaha > 50%</option>
+                                            <option value="sakit">Sakit Berat / Disabilitas Permanen</option>
+                                            <option value="bangkrut">Usaha Pailit / Kebangkrutan Non-Sengaja</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-semibold text-slate-300 mb-1">Kemampuan Pengajuan Nominal Baru</label>
+                                        <input type="number" placeholder="Contoh: 2000000" required class="w-full bg-slate-800 text-white text-xs rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-teal-400" />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Uraian Alasan Klarifikasi</label>
+                                    <textarea rows="3" placeholder="Jelaskan kondisi ekonomi Anda secara rinci untuk diverifikasi oleh Pengadilan Agama & BAZNAS..." required class="w-full bg-slate-800 text-white text-xs rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-teal-400"></textarea>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-300 mb-1">Unggah Dokumen Pendukung (Surat PHK / Rekening Korban / Surat Medis)</label>
+                                    <input type="file" class="w-full bg-slate-800 text-slate-400 text-xs rounded-xl px-3 py-2 border border-slate-700 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-teal-600 file:text-white hover:file:bg-teal-500" />
+                                </div>
+
+                                <div class="pt-2 flex justify-end">
+                                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition flex items-center space-x-2">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                        <span>Kirim Klarifikasi ke Pengadilan</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROLE VIEW 3: DANA PENYOKONG (BAZNAS / TABARRU') -->
+                <div id="role-view-penyokong" class="role-view space-y-6 hidden">
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-white flex items-center">
+                                <i class="fa-solid fa-hand-holding-dollar text-emerald-400 mr-2"></i> Skema Dana Penyokong (Qardhul Hasan & Tabarru')
+                            </h3>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                Mitra BAZNAS & LAZ Peradilan
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Berdasarkan riset esai <strong>NAFKAHKU</strong>, apabila pemberi nafkah (ayah) mengalami kebangkrutan, PHK, atau sengaja menunggak, anak tidak boleh menjadi korban ketiadaan biaya hidup. Platform ini mengintegrasikan dana filantropi Islam melalui dua akad utama:
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div class="p-4 rounded-xl bg-slate-800/80 border border-teal-500/30 space-y-2">
+                                <h4 class="font-bold text-teal-300 text-sm flex items-center">
+                                    <i class="fa-solid fa-scale-balanced text-amber-400 mr-2"></i> 1. Akad Qardhul Hasan (Pinjaman Kebajikan)
+                                </h4>
+                                <p class="text-xs text-slate-400">
+                                    Digunakan untuk pemberi nafkah yang mengalami kendala sementara (PHK/Sakit). BAZNAS menalangi nafkah anak tanpa bunga, dan ayah akan mengembalikannya secara bertahap saat telah bekerja kembali.
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-800/80 border border-emerald-500/30 space-y-2">
+                                <h4 class="font-bold text-emerald-300 text-sm flex items-center">
+                                    <i class="fa-solid fa-heart text-rose-400 mr-2"></i> 2. Akad Tabarru' (Hibah / Zakat Mustahiq)
+                                </h4>
+                                <p class="text-xs text-slate-400">
+                                    Digunakan jika pemberi nafkah meninggal dunia, mengalami disabilitas permanen, atau tidak berpenghasilan mutlak. Dana berasal dari alokasi Asnaf Ibnu Sabil/Fakir Miskin BAZNAS.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-time Pool Stats & Disbursement Ledger -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+                            <span class="text-xs text-slate-400 font-semibold">Total Saldo Dana Penyokong Ready</span>
+                            <p class="text-2xl font-black text-emerald-400 mt-1">Rp 1.250.000.000</p>
+                            <p class="text-[11px] text-slate-500 mt-1">Konsolidasi Kas BAZNAS RI & Mitra</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+                            <span class="text-xs text-slate-400 font-semibold">Nafkah Terkover Bulan Ini</span>
+                            <p class="text-2xl font-black text-teal-400 mt-1">142 Anak</p>
+                            <p class="text-[11px] text-teal-400 mt-1"><i class="fa-solid fa-shield-check"></i> Hak Anak Bebas Penundaan</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800">
+                            <span class="text-xs text-slate-400 font-semibold">Tingkat Recovery Qardhul Hasan</span>
+                            <p class="text-2xl font-black text-amber-400 mt-1">88.4%</p>
+                            <p class="text-[11px] text-slate-500 mt-1">Melalui Pengembalian Payroll Tahap II</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROLE VIEW 4: DASHBOARD PENGADILAN AGAMA -->
+                <div id="role-view-pengadilan" class="role-view space-y-6 hidden">
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-white flex items-center">
+                                    <i class="fa-solid fa-scale-balanced text-indigo-400 mr-2"></i> Dashboard Monitoring Eksekusi Pengadilan Agama
+                                </h3>
+                                <p class="text-xs text-slate-400">Pengawasan Putusan Nafkah Anak secara Real-time dengan Integrasi Perbankan & Lembaga Eksekusi</p>
+                            </div>
+                            <button onclick="simulasiKirimTeguran()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition flex items-center space-x-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Panggil Otomatis Penunggak (Aanmaning)</span>
+                            </button>
+                        </div>
+
+                        <!-- Integrated Table -->
+                        <div class="overflow-x-auto rounded-xl border border-slate-800">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-800 text-slate-300 font-bold uppercase tracking-wider text-[11px]">
+                                    <tr>
+                                        <th class="p-3.5">No. Perkara</th>
+                                        <th class="p-3.5">Inisial Anak</th>
+                                        <th class="p-3.5">Kewajiban / Bulan</th>
+                                        <th class="p-3.5">Status Patuh Bayar</th>
+                                        <th class="p-3.5">Tindakan Legal Sesuai Esai</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 text-slate-300">
+                                    <tr class="hover:bg-slate-800/50">
+                                        <td class="p-3.5 font-bold text-teal-400">1204/Pdt.G/2024/PA.JS</td>
+                                        <td class="p-3.5">A.F. (10) & R.M. (7)</td>
+                                        <td class="p-3.5 font-semibold">Rp 4.500.000</td>
+                                        <td class="p-3.5">
+                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                                                Menunggak (Bulan 1)
+                                            </span>
+                                        </td>
+                                        <td class="p-3.5 text-slate-400">
+                                            <span class="text-teal-300 font-semibold"><i class="fa-solid fa-bolt text-amber-400"></i> Auto-Deduct Payroll Interception</span> (Pemberitahuan HRD Terkirim)
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/50">
+                                        <td class="p-3.5 font-bold text-teal-400">0891/Pdt.G/2025/PA.YK</td>
+                                        <td class="p-3.5">M.R.K. (12)</td>
+                                        <td class="p-3.5 font-semibold">Rp 2.000.000</td>
+                                        <td class="p-3.5">
+                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                                Patuh (Lunas)
+                                            </span>
+                                        </td>
+                                        <td class="p-3.5 text-slate-400">
+                                            Tidak Ada Action (Pemotongan Payroll Rutin Sektor Formal)
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/50">
+                                        <td class="p-3.5 font-bold text-teal-400">0412/Pdt.G/2025/PA.SBY</td>
+                                        <td class="p-3.5">K.A.N. (5)</td>
+                                        <td class="p-3.5 font-semibold">Rp 3.500.000</td>
+                                        <td class="p-3.5">
+                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                                                Macet > 3 Bulan
+                                            </span>
+                                        </td>
+                                        <td class="p-3.5 text-slate-400">
+                                            <span class="text-rose-400 font-bold"><i class="fa-solid fa-lock"></i> Pembekuan Layanan Publik</span> (E-KTP Paspor / Bloking Rekening Dukcapil)
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/50">
+                                        <td class="p-3.5 font-bold text-teal-400">1553/Pdt.G/2025/PA.BDG</td>
+                                        <td class="p-3.5">S.A. (8) & Z.A. (4)</td>
+                                        <td class="p-3.5 font-semibold">Rp 5.000.000</td>
+                                        <td class="p-3.5">
+                                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                                Klarifikasi PHK
+                                            </span>
+                                        </td>
+                                        <td class="p-3.5 text-slate-400">
+                                            <span class="text-cyan-300 font-semibold"><i class="fa-solid fa-hand-holding-dollar"></i> Bridging Dana Qardhul Hasan BAZNAS</span> (Ditalangi)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. HOME LANDING PAGE SECTION -->
+            <section id="sec-home" class="content-sec space-y-8 hidden">
+                <!-- Hero Banner -->
+                <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 border border-teal-500/30 p-8 md:p-12 shadow-2xl">
+                    <div class="relative z-10 max-w-3xl space-y-6">
+                        <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                            Gagasan Kebijakan & Innovation Platform 2026
+                        </span>
+                        <h1 class="text-3xl md:text-5xl font-black text-white leading-tight">
+                            Transformasi Eksekusi Nafkah Anak Pasca Perceraian di Indonesia
+                        </h1>
+                        <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                            Solusi terintegrasi menghubungkan <span class="text-teal-300 font-semibold">SIPP Peradilan Agama</span>, <span class="text-amber-300 font-semibold">Sistem Payroll / Perbankan</span>, dan <span class="text-emerald-300 font-semibold">Dana Penyokong Filantropi Islam (BAZNAS)</span> untuk menjamin hak hidup & pendidikan anak.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="switchSection('dashboard')" class="px-6 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs shadow-lg shadow-teal-500/20 transition flex items-center space-x-2">
+                                <i class="fa-solid fa-gauge-high"></i>
+                                <span>Buka Dashboard Interaktif</span>
+                            </button>
+                            <button onclick="switchSection('esai')" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition flex items-center space-x-2">
+                                <i class="fa-solid fa-book-open"></i>
+                                <span>Baca Karya Tulis Lengkap</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 Pillar Stat Highlights -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-base">Celah Eksekusi SIPP</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Amar putusan pengadilan agama sering menjadi *lex imperfecta* (hukum tak bergigi) karena tidak adanya mekanisme pemotongan otomatis rekening penunggak.
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-base">Employer Withholding</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Adopsi skema Australia & Malaysia: pemotongan otomatis langsung pada sistem penggajian (payroll) instansi formal tempat ayah bekerja.
+                        </p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-base">Dana Penyokong Syariah</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Bridging dana darurat via BSK-BAZNAS dengan akad Qardhul Hasan / Tabarru' bagi ayah yang terbukti PHK atau berpenghasilan tidak tetap.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. TAHAPAN PENEGAKAN WORKFLOW -->
+            <section id="sec-tahapan" class="content-sec space-y-6 hidden">
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                        SYSTEM PENEGAKAN MULTI-TIER
+                    </span>
+                    <h2 class="text-xl font-extrabold text-white">5 Tahapan Penegakan Hukum NAFKAHKU</h2>
+                    <p class="text-xs text-slate-400">Alur berjenjang penegakan kewajiban nafkah mulai dari upaya otomatisasi hingga sanksi keperdataan.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center font-black text-lg shrink-0">1</div>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Pendaftaran Putusan SIPP & Sinkronisasi NIK</h3>
+                            <p class="text-xs text-slate-400 mt-1">Data perkara inkrah diinput ke SIPP PA dan disinkronkan dengan Dukcapil & Bank Indonesia untuk pemetaan aset/rekening.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-black text-lg shrink-0">2</div>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Intersepsi Payroll Otomatis (Employer Withholding)</h3>
+                            <p class="text-xs text-slate-400 mt-1">Untuk sektor formal/ASN/BUMN, instruksi pemotongan gaji diteruskan langsung ke sistem penggajian perusahaan tempat ayah bekerja.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-black text-lg shrink-0">3</div>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Bridging Dana Penyokong (Jika Terjadi Penunggakan / PHK)</h3>
+                            <p class="text-xs text-slate-400 mt-1">Jika terdeteksi gagal bayar, BAZNAS mengucurkan dana talangan Qardhul Hasan sehingga kebutuhan hidup anak tidak tertunda.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-black text-lg shrink-0">4</div>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Pembekuan Akses Layanan Publik & Lisensi</h3>
+                            <p class="text-xs text-slate-400 mt-1">Penungggak sengaja akan dibatasi akses perpanjangan SIM, Paspor, perizinan usaha, dan fasilitas kredit perbankan.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-black text-lg shrink-0">5</div>
+                        <div>
+                            <h3 class="font-bold text-white text-sm">Sita Eksekusi Rekening & Aset Terdaftar</h3>
+                            <p class="text-xs text-slate-400 mt-1">Juru sita pengadilan menerbitkan surat perintah pemblokiran & pencairan dana dari rekening bank penungggak.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. VERIFIKASI EKONOMI & DUMMY DATA -->
+            <section id="sec-datadummy" class="content-sec space-y-6 hidden">
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                        INTEGRASI DATA SEKTOR FORMAL & INFORMAL
+                    </span>
+                    <h2 class="text-xl font-extrabold text-white">Verifikasi Ekonomi & Profil Penanggung Jawab</h2>
+                    <p class="text-xs text-slate-400">Verifikasi silang data tempat kerja, BPJS Ketenagakerjaan, dan status pemotongan gaji secara akurat.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-white text-sm">Simulasi Payroll Interception (Auto-Deduct Gaji Ayah)</h3>
+                        <button onclick="simulasiPayrollMassal()" class="px-3.5 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition">
+                            <i class="fa-solid fa-bolt mr-1"></i> Trigger Simulasi Gajian Massal
+                        </button>
+                    </div>
+
+                    <div id="payroll-notification" class="hidden p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs">
+                        <i class="fa-solid fa-circle-check mr-2"></i> <strong>SIMULASI PAYROLL SUKSES:</strong> Gaji Ayah telah terpotong sebesar Rp 4.500.000 dan sukses ditransfer langsung ke Rekening Ibu Siti Rahmawati!
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-xl bg-slate-800/80 border border-slate-700 space-y-2">
+                            <span class="text-[10px] font-bold text-teal-400 uppercase">Profil Ayah (Pemberi Nafkah)</span>
+                            <p class="text-sm font-bold text-white">Bpk. Ahmad Fauzi (38 Thn)</p>
+                            <p class="text-xs text-slate-400">Pekerjaan: Senior Engineer (PT. Teknologi Nusa)</p>
+                            <p class="text-xs text-slate-400">Status Sektor: <span class="text-emerald-400 font-bold">Formal (BPJS TK Active)</span></p>
+                            <p class="text-xs text-slate-400">Gaji Bulanan Terverifikasi: Rp 14.500.000</p>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-800/80 border border-slate-700 space-y-2">
+                            <span class="text-[10px] font-bold text-amber-400 uppercase">Profil Ibu (Wali Anak)</span>
+                            <p class="text-sm font-bold text-white">Ny. Siti Rahmawati (35 Thn)</p>
+                            <p class="text-xs text-slate-400">Bank Tujuan: Bank Mandiri (137-00-XXXX-882)</p>
+                            <p class="text-xs text-slate-400">Anak Receiver: A.F. (10 Thn) & R.M. (7 Thn)</p>
+                            <p class="text-xs text-slate-400">Persentase Potongan Gaji: <span class="text-amber-300 font-bold">31% dari Gaji Pokok</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. PUSAT PENGADUAN NAFKAHKU -->
+            <section id="sec-pengaduan" class="content-sec space-y-6 hidden">
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        PUSAT LAYANAN & ESKALASI
+                    </span>
+                    <h2 class="text-xl font-extrabold text-white">Pusat Pengaduan Hak Anak & Penunggakan</h2>
+                    <p class="text-xs text-slate-400">Layanan aduan langsung ke Juru Sita Pengadilan Agama dan Tim Posbakum NAFKAHKU.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                    <form onsubmit="handleAduanForm(event)" class="space-y-4 max-w-2xl">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Nomor Perkara Pengadilan Agama</label>
+                            <input type="text" placeholder="Contoh: 1204/Pdt.G/2024/PA.JS" required class="w-full bg-slate-800 text-white text-xs rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-teal-400" />
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Jenis Aduan / Keluhan</label>
+                            <select required class="w-full bg-slate-800 text-white text-xs rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-teal-400">
+                                <option value="tunggakan">Penunggakan Nafkah > 1 Bulan</option>
+                                <option value="rekening">Perubahan Nomor Rekening Wali</option>
+                                <option value="penyokong">Permohonan Bantuan Dana Penyokong Darurat</option>
+                                <option value="alamat">Pemberi Nafkah Pindah Alamat / Hilang Kontak</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Rincian Laporan Pengaduan</label>
+                            <textarea rows="4" placeholder="Tuliskan rinci kronologi penunggakan atau kendala yang dialami..." required class="w-full bg-slate-800 text-white text-xs rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-teal-400"></textarea>
+                        </div>
+
+                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition">
+                            <i class="fa-solid fa-paper-plane mr-1.5"></i> Kirim Aduan Resmi
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 6. ARSITEKTUR & SECURITY -->
+            <section id="sec-arsitektur" class="content-sec space-y-6 hidden">
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                        KEAMANAN TINGKAT TINGGI & BRIDGING API
+                    </span>
+                    <h2 class="text-xl font-extrabold text-white">Arsitektur Keamanan & Integrasi Sistem</h2>
+                    <p class="text-xs text-slate-400">Jaminan kerahasiaan data pribadi, enkripsi finansial, dan keterhubungan antar-lembaga.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-white text-sm flex items-center">
+                            <i class="fa-solid fa-lock text-cyan-400 mr-2"></i> Enkripsi End-to-End & Audit Trail
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Seluruh log pemotongan gaji dan transfer dana dicatat menggunakan *cryptographic hash audit trail* untuk mencegah manipulasi data oleh pihak manapun.
+                        </p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-white text-sm flex items-center">
+                            <i class="fa-solid fa-network-wired text-amber-400 mr-2"></i> OpenAPI Perbankan & MA-SIPP
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Menggunakan standar API Bank Indonesia (SNAP) untuk eksekusi transfer dana seketika (*instant settlement*) ke rekening penerima tanpa biaya admin.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. AUTH CENTER -->
+            <section id="sec-auth" class="content-sec space-y-6 hidden">
+                <div class="max-w-md mx-auto p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-6">
+                    <div class="text-center space-y-2">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-600 to-amber-500 mx-auto flex items-center justify-center text-white text-xl shadow-lg">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <h2 class="text-xl font-extrabold text-white">Auth Center NAFKAHKU</h2>
+                        <p class="text-xs text-slate-400">Akses SSO Terintegrasi Mahkamah Agung & Dukcapil</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">NIK / Identitas KTP</label>
+                            <input type="text" placeholder="3174XXXXXXXXXXXX" class="w-full bg-slate-800 text-white text-xs rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-teal-400" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Kata Sandi / PIN Keamanan</label>
+                            <input type="password" placeholder="••••••••" class="w-full bg-slate-800 text-white text-xs rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:border-teal-400" />
+                        </div>
+                        <button onclick="customAlert('Autentikasi SSO Mahkamah Agung & Dukcapil Berhasil! Mengalihkan ke Dashboard...'); switchSection('dashboard');" class="w-full py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs shadow-lg transition">
+                            Masuk ke Portal NAFKAHKU
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. RINGKASAN ESAI & CELAH HUKUM -->
+            <section id="sec-ringkasan" class="content-sec space-y-6 hidden">
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                        RINGKASAN EKSEKUTIF RISET
+                    </span>
+                    <h2 class="text-xl font-extrabold text-white">Problematic Gap & Kerangka Solusi Esai</h2>
+                    <p class="text-xs text-slate-400">Analisis Akar Masalah Pemenuhan Nafkah Anak Pasca Perceraian di Peradilan Agama Indonesia.</p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                    <h3 class="font-bold text-white text-sm">3 Celah Utama Sistem Hukum Eksisting:</h3>
+                    <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside">
+                        <li><strong>Ketidakpastian Eksekusi:</strong> Putusan nafkah anak tidak memiliki daya paksa eksekusi otomatis (*automatic enforcement mechanism*).</li>
+                        <li><strong>Tingginya Biaya Permohonan Eksekusi:</strong> Ibu harus membayar panjar biaya eksekusi yang seringkali lebih mahal dari nominal nafkah bulanan anak.</li>
+                        <li><strong>Ketiadaan Jaring Pengaman (Safety Net):</strong> Belum ada lembaga pendukung yang menalangi nafkah jika mantan suami terbukti bangkrut atau PHK.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 9. KOMPARASI LUAR NEGERI -->
+            <section id="sec-komparasi" class="content-sec space-y-6 hidden">
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                        STUDI BANDING INTERNASIONAL
+                    </span>
+                    <h2 class="text-xl font-extrabold text-white">Pelajaran Praktik Terbaik: Malaysia & Australia</h2>
+                    <p class="text-xs text-slate-400">Komparasi Lembaga BSK JKSM Malaysia & Child Support Agency Australia.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-amber-300 text-sm flex items-center">
+                            <i class="fa-solid fa-flag text-amber-400 mr-2"></i> Bahagian Sokongan Keluarga (BSK JKSM Malaysia)
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Memiliki Dana Pendahuluan Nafkah untuk menalangi nafkah anak ibu tunggal, kemudian Mahkamah Syariah melakukan pembekuan rekening bank (*hiwalah*) milik mantan suami.
+                        </p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+                        <h3 class="font-bold text-teal-300 text-sm flex items-center">
+                            <i class="fa-solid fa-globe text-teal-400 mr-2"></i> Child Support Scheme (Services Australia)
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Menggunakan mekanisme *Employer Withholding* di mana kantor pajak (ATO) memotong kewajiban nafkah secara langsung dari gaji kotor sebelum ditransfer ke karyawan.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. NASKAH ESAI LENGKAP -->
+            <section id="sec-esai" class="content-sec space-y-6 hidden">
+                <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-white">Naskah Lengkap Karya Tulis Ilmiah NAFKAHKU</h2>
+                            <p class="text-xs text-slate-400">Penulis: Hilma Elmumtaziya A. dkk • UIN Sunan Kalijaga Yogyakarta</p>
+                        </div>
+                        <button onclick="copyEssayText()" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition flex items-center space-x-1.5">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>Salin Naskah Esai</span>
+                        </button>
+                    </div>
+
+                    <div id="essay-content-text" class="text-xs text-slate-300 leading-relaxed space-y-4 max-h-[600px] overflow-y-auto pr-2">
+                        <p class="font-bold text-teal-300 text-sm">NAFKAHKU: Platform Integrasi Peradilan Agama, Sistem Perbankan, dan Dana Filantropi Islam Solusi Perlindungan Hak Anak Pasca Perceraian</p>
+                        <p><strong>PENDAHULUAN:</strong> Perceraian di Indonesia seringkali meninggalkan dampak dominan bagi ketahanan ekonomi anak. Banyak amar putusan Pengadilan Agama yang menetapkan kewajiban nafkah anak tidak terealisasi karena lemahnya mekanisme eksekusi hukum...</p>
+                        <p><strong>PEMBAHASAN:</strong> Platform NAFKAHKU menghadirkan dua pilar eksekusi utama: (1) Sektor Formal melalui Automatic Payroll Interception, dan (2) Sektor Informal/Kendala Ekonomi melalui Dana Penyokong Qardhul Hasan BAZNAS...</p>
+                        <p><strong>KESIMPULAN:</strong> Sinergi antara Mahkamah Agung, BAZNAS, dan Perbankan melalui platform NAFKAHKU dapat menghapus ketimpangan eksekusi putusan peradilan agama demi kemaslahatan hak hidup anak Indonesia.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- MODAL CUSTOM NOTIFICATION (Replaces native alert) -->
+    <div id="custom-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+            <div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center mx-auto text-lg font-bold">
+                <i class="fa-solid fa-info"></i>
+            </div>
+            <h3 class="font-bold text-white text-base">Notifikasi Sistem</h3>
+            <p id="custom-modal-msg" class="text-xs text-slate-300 leading-relaxed"></p>
+            <button onclick="closeModal()" class="w-full py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition">
+                Mengerti / Tutup
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Custom Alert Dialog (No native alert)
+        function customAlert(msg) {
+            const modal = document.getElementById('custom-modal');
+            const msgEl = document.getElementById('custom-modal-msg');
+            if (msgEl && modal) {
+                msgEl.innerText = msg;
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('custom-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+        }
+
+        // Switch Main Sections
+        function switchSection(secId) {
+            const sections = document.querySelectorAll('.content-sec');
+            sections.forEach(s => s.classList.add('hidden'));
+
+            const target = document.getElementById('sec-' + secId);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('sidebar-active'));
+
+            const activeNav = document.getElementById('nav-' + secId);
+            if (activeNav) {
+                activeNav.classList.add('sidebar-active');
+            }
+
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+            }
+        }
+
+        // Switch Roles Inside Dashboard View
+        function changeDashboardRole(role) {
+            const views = document.querySelectorAll('.role-view');
+            views.forEach(v => v.classList.add('hidden'));
+
+            const target = document.getElementById('role-view-' + role);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('sidebar-active'));
+            const activeNav = document.getElementById('nav-' + role);
+            if (activeNav) {
+                activeNav.classList.add('sidebar-active');
+            }
+        }
+
+        function switchRoleView(role) {
+            switchSection('dashboard');
+            const selector = document.getElementById('role-selector');
+            if (selector) {
+                selector.value = role;
+                changeDashboardRole(role);
+            }
+        }
+
+        // Interactive Handlers
+        function simulasiCairPenyokong() {
+            customAlert('BERHASIL: Permohonan Dana Penyokong Qardhul Hasan disetujui BAZNAS! Rp 4.500.000 telah disalurkan ke rekening Ny. Siti Rahmawati.');
+        }
+
+        function simulasiBayarManual() {
+            customAlert('SIMULASI PENYETORAN: Silakan pindai Kode QRIS NAFKAHKU atau transfer ke VA Bank Mandiri: 88901-12042024. Dana langsung diteruskan ke rekening anak.');
+        }
+
+        function handleKlarifikasiForm(e) {
+            e.preventDefault();
+            customAlert('KLARIFIKASI TERKIRIM: Pengajuan penyesuaian kendala ekonomi Anda telah terdaftar dan akan diverifikasi oleh Panitera Pengadilan Agama & BAZNAS.');
+        }
+
+        function simulasiKirimTeguran() {
+            customAlert('PANGGILAN OLEH PA: Surat Teguran (Aanmaning) dan Notifikasi WA Resmi telah dikirimkan ke Penunggak Perkara No. 1204/Pdt.G/2024/PA.JS.');
+        }
+
+        function simulasiPayrollMassal() {
+            const notif = document.getElementById('payroll-notification');
+            if (notif) {
+                notif.classList.remove('hidden');
+                setTimeout(() => {
+                    notif.classList.add('hidden');
+                }, 7000);
+            }
+        }
+
+        function handleAduanForm(e) {
+            e.preventDefault();
+            customAlert('ADUAN TERKIRIM: Laporan penunggakan Anda telah diterima oleh Pusat Layanan NAFKAHKU dan akan ditindaklanjuti oleh Posbakum PA.');
+        }
+
+        function copyEssayText() {
+            const text = document.getElementById('essay-content-text').innerText;
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            customAlert('Teks Naskah Esai Berhasil Disalin ke Clipboard!');
+        }
+    </script>
+</body>
+</html>
